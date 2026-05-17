@@ -1,0 +1,19 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+td, th {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+input {
+  width: 90%;
+  padding: 4px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  font-size: 14px;
+}
