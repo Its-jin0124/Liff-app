@@ -1,15 +1,11 @@
-// ★ あなたの GAS Web アプリの URL を入れてください
-const GAS_URL = "https://script.google.com/macros/s/XXXXXX/exec";
-
-// ★ あなたの LIFF ID を入れてください
-const LIFF_ID = "YOUR_LIFF_ID";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzv0JW-UAwmPh7X0H3zSYrez1UZcy_xRxmLHLwDPZQ5CtH_KQK2840Xaf7W3v3EVut3/exec";
+const LIFF_ID = "2010107820-vGh6Z9fq";
 
 document.addEventListener("DOMContentLoaded", async () => {
   await liff.init({ liffId: LIFF_ID });
   loadTable();
 });
 
-// スプレッドシートの内容を読み込んで表を作る
 async function loadTable() {
   const res = await fetch(GAS_URL + "?mode=read");
   const data = await res.json();
@@ -26,7 +22,6 @@ async function loadTable() {
       const input = document.createElement("input");
       input.value = cell;
 
-      // 入力が変わったら GAS に送信
       input.addEventListener("change", () => {
         updateCell(rowIndex, colIndex, input.value);
       });
@@ -39,7 +34,6 @@ async function loadTable() {
   });
 }
 
-// セルの更新を GAS に送信
 async function updateCell(row, col, value) {
   await fetch(GAS_URL, {
     method: "POST",

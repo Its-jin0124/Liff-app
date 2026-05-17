@@ -1,15 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <title>予約表</title>
-  <link rel="stylesheet" href="style.css">
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script src="script.js" defer></script>
+
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    td, th {
+      border: 1px solid #ccc;
+      padding: 6px;
+    }
+    input {
+      width: 95%;
+      padding: 4px;
+    }
+  </style>
 </head>
+
 <body>
   <h2>予約表</h2>
+
+  <!-- ★ ここが重要：JS が描画するテーブル -->
   <table id="yoyakuTable"></table>
 
-  <script src="script.js"></script>
 </body>
 </html>
