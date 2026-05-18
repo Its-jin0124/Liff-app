@@ -1,4 +1,4 @@
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzv0JW-UAwmPh7X0H3zSYrez1UZcy_xRxmLHLwDPZQ5CtH_KQK2840Xaf7W3v3EVut3/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxV5vHlKwpZfXFzZOjHXeWY5BFuUUw-iTqJ2sgBgzKmBT9WAhOqzc3ON-rDmJQR5Z4Y/exec";
 const LIFF_ID = "2010107820-vGh6Z9fq";
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -13,30 +13,43 @@ async function loadTable() {
   const table = document.getElementById("yoyakuTable");
   table.innerHTML = "";
 
-  data.forEach((row, rowIndex) => {
+  // データは5行目から
+  for (let i = 4; i < data.length; i++) {
+    const row = data[i];
     const tr = document.createElement("tr");
 
-    row.forEach((cell, colIndex) => {
+    // 表示する列：B〜F列（1〜5）
+    for (let col = 1; col <= 5; col++) {
       const td = document.createElement("td");
 
-      const input = document.createElement("input");
-      input.value = cell;
+      if (col >= 2 && col <= 5) {
+        // 名前1〜4（C〜F列）は編集可能
+        const input = document.createElement("input");
+        input.value = row[col];
 
-      input.addEventListener("change", () => {
-        updateCell(rowIndex, colIndex, input.value);
-      });
+        const columnName = ["名前1", "名前2", "名前3", "名前4"][col - 2];
+        const date = row[1]; // B列の日付
 
-      td.appendChild(input);
+        input.addEventListener("change", () => {
+          updateCell(date, columnName, input.value);
+        });
+
+        td.appendChild(input);
+      } else {
+        // B列（日付）は表示のみ
+        td.textContent = row[col];
+      }
+
       tr.appendChild(td);
-    });
+    }
 
     table.appendChild(tr);
-  });
+  }
 }
 
-async function updateCell(row, col, value) {
+async function updateCell(date, column, name) {
   await fetch(GAS_URL, {
     method: "POST",
-    body: JSON.stringify({ row, col, value })
+    body: JSON.stringify({ date, column, name })
   });
 }
