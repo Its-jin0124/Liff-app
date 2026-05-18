@@ -46,10 +46,12 @@ async function loadTable() {
     table.appendChild(tr);
   }
 }
-
 async function updateCell(date, column, name) {
   await fetch(GAS_URL, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({ date, column, name })
   });
 }
