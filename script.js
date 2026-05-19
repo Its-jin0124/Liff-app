@@ -1,4 +1,4 @@
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzuECHSyZo3Qggm5y2MHo85-D5XPAOrUw83vQsYBx_auHZRF_kuBdjMNbxsUKo2u8v5/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzgYwvQ1yY5SXDBN3ZCVs1ibzhkeEHQiHlOU7SZPll9bfN_ji8hpPP8rWSgFwzs1TIf/exec";
 const LIFF_ID = "2010107820-vGh6Z9fq";
 
 // ★ 変更されたセルを保存する配列
