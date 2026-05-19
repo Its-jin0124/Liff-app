@@ -13,31 +13,26 @@ async function loadTable() {
   const table = document.getElementById("yoyakuTable");
   table.innerHTML = "";
 
-  // ★ A1〜H21（21行）をそのまま表示
   for (let i = 0; i < data.length; i++) {
     const row = data[i];
     const tr = document.createElement("tr");
 
-    // A〜H列（0〜7）
     for (let col = 0; col <= 7; col++) {
       const td = document.createElement("td");
 
-      // ★ 編集可能条件：C〜F列（col=2〜5）かつ 5〜16行目（i=4〜15）
       if (col >= 2 && col <= 5 && i >= 4 && i <= 15) {
         const input = document.createElement("input");
         input.value = row[col];
 
         const columnName = ["名前1", "名前2", "名前3", "名前4"][col - 2];
-        const date = row[1]; // B列（日程）
+        const date = row[1];
 
-        // ★ blur（フォーカスが外れた瞬間）で送信
         input.addEventListener("blur", () => {
           updateCell(date, columnName, input.value);
         });
 
         td.appendChild(input);
       } else {
-        // ★ それ以外は表示のみ
         td.textContent = row[col];
       }
 
