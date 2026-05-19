@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function loadTable() {
-  const res = await fetch(GAS_URL + "?mode=read");
+  const res = await fetch(GAS_URL + "?mode=write");
   const data = await res.json();
 
   const table = document.getElementById("yoyakuTable");
