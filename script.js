@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function loadTable() {
-  const res = await fetch(GAS_URL + "?mode=write");
+  const res = await fetch(GAS_URL + "?mode=read");
   const data = await res.json();
 
   const table = document.getElementById("yoyakuTable");
@@ -55,3 +55,4 @@ async function updateCell(date, column, name) {
     body: JSON.stringify({ date, column, name })
   });
 }
+
