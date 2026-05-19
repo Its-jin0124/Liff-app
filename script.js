@@ -1,4 +1,4 @@
-const GAS_URL = "https://script.google.com/macros/s/AKfycbyIvgi37JhaD-KYS7WC1_AfcYPrHovi2LkkTAHYHR0ZFAWYKI8RKsPUQcZPJofK0F8R/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzOdGPnt-Jkcuj37qE9gk5v-oJQlg76ddglw8gVPiIm6cfSikwINEd84D2m6D2P3wJZ/exec";
 const LIFF_ID = "2010107820-vGh6Z9fq";
 
 document.addEventListener("DOMContentLoaded", async () => {
