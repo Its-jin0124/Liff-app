@@ -30,7 +30,8 @@ async function loadTable() {
         const columnName = ["名前1", "名前2", "名前3", "名前4"][col - 2];
         const date = row[1]; // B列（日程）
 
-        input.addEventListener("change", () => {
+        // ★ blur（フォーカスが外れた瞬間）で送信
+        input.addEventListener("blur", () => {
           updateCell(date, columnName, input.value);
         });
 
@@ -46,6 +47,7 @@ async function loadTable() {
     table.appendChild(tr);
   }
 }
+
 async function updateCell(date, column, name) {
   await fetch(GAS_URL, {
     method: "POST",
@@ -55,4 +57,3 @@ async function updateCell(date, column, name) {
     body: JSON.stringify({ date, column, name })
   });
 }
-
