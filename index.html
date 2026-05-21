@@ -9,19 +9,27 @@
 <body>
 
   <h2>さくら坂３丁目　青色パトロール　巡回担当表</h2>
+
+  <!-- GASから取得した日付を表示 -->
   <p id="dateText"></p>
 
+  <!-- スプレッドシートの内容を描画する表 -->
   <table>
     <tbody id="sheetBody"></tbody>
   </table>
 
+  <!-- 注意書き -->
   <p>※自身の名前を入力してください。</p>
   <p>※同時に入力されると、後の方が優先される可能性があります。</p>
   <p>※入力後のロック機能はありません。</p>
 
-  <button id="sendBtn" class="floating-btn">送信</button>
+  <!-- ★ 送信ボタンはここに固定配置（表の外） -->
+  <div style="text-align:center; margin-top:10px;">
+    <button id="sendBtn" class="inline-send-btn">送信</button>
+  </div>
 
+  <!-- スクリプト -->
   <script src="script.js"></script>
+
 </body>
 </html>
-

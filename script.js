@@ -19,14 +19,20 @@ fetch(`${GAS_URL}?callback=cb`)
         // ★ 1行目（ヘッダー）は編集不可
         if (rIndex === 0) {
           td.textContent = cell;
-        } else if (cIndex >= 1 && cIndex <= 4) {
-          // 名前1〜4列のみ入力可能
+        }
+        // ★ 2行目以降は名前1〜4（cIndex 1〜4）だけ編集可能
+        else if (cIndex >= 1 && cIndex <= 4) {
           const input = document.createElement("input");
           input.value = cell;
-          input.dataset.row = rIndex + 4;
-          input.dataset.col = cIndex + 2;
+
+          // スプレッドシートの行列に合わせる
+          input.dataset.row = rIndex + 4; // B5〜
+          input.dataset.col = cIndex + 2; // C〜F
+
           td.appendChild(input);
-        } else {
+        }
+        // ★ その他の列は編集不可
+        else {
           td.textContent = cell;
         }
 
@@ -35,33 +41,6 @@ fetch(`${GAS_URL}?callback=cb`)
 
       tbody.appendChild(tr);
     });
-
-    // ★ 表描画後に「決まらない場合」列の上に送信ボタン行を追加
-    const btnTr = document.createElement("tr");
-
-    // G列（決まらない場合）の位置に合わせるため、5列分の空白セル
-    for (let i = 0; i < 5; i++) {
-      btnTr.appendChild(document.createElement("td"));
-    }
-
-    // 6列目にボタンを置く
-    const btnTd = document.createElement("td");
-    const btn = document.createElement("button");
-    btn.textContent = "送信";
-    btn.className = "inline-send-btn";
-
-    btn.addEventListener("click", () => {
-      sendUpdates();
-    });
-
-    btnTd.appendChild(btn);
-    btnTr.appendChild(btnTd);
-
-    // 備考列の分の空白セル
-    btnTr.appendChild(document.createElement("td"));
-
-    // 表の最後に追加（決まらない場合の上に見える位置）
-    tbody.appendChild(btnTr);
   });
 
 // ▼ 送信処理（POST）
@@ -88,5 +67,6 @@ function sendUpdates() {
     });
 }
 
-// ▼ 右下の送信ボタンも同じ処理を使う
+// ▼ 下部の送信ボタンにイベントを設定
 document.getElementById("sendBtn").addEventListener("click", sendUpdates);
+
