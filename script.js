@@ -1,9 +1,14 @@
 // ★ あなたの GAS WebアプリURL を入れてください
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzZNdtTqOLmMKOsxATfMqn_jo7Azy1UCEn2R_xaBqpEeYND4QH-jKxd4nEZVFoiRhdk/exec";
-// ▼ 表示処理（GET）
-fetch(GAS_URL)
-  .then(res => res.json())
-  .then(data => {
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzvrbHFxRM-hL9iIbObv5NACZ4HGVwj2qR4sD81wlPi1uQAXPhc_MnNYw2hVPEk0YsG/exec";
+
+// ▼ 表示処理（GET）→ JSONP
+fetch(`${GAS_URL}?callback=cb`)
+  .then(res => res.text())
+  .then(text => {
+    // JSONP → JSON に変換
+    const json = text.replace(/^cb\(|\)$/g, "");
+    const data = JSON.parse(json);
+
     // F1 の日付
     document.getElementById("dateText").textContent = data.date;
 
@@ -16,12 +21,10 @@ fetch(GAS_URL)
       row.forEach((cell, cIndex) => {
         const td = document.createElement("td");
 
-        // C5〜F16（＝表の2〜5列目）だけ入力可能
         if (rIndex >= 1 && rIndex <= 12 && cIndex >= 1 && cIndex <= 4) {
           const input = document.createElement("input");
           input.value = cell;
 
-          // 実際のシート位置（row=5〜16, col=3〜6）
           input.dataset.row = rIndex + 4;
           input.dataset.col = cIndex + 2;
 
@@ -37,7 +40,26 @@ fetch(GAS_URL)
     });
   });
 
-// ▼ 送信ボタン（まだ送信処理は後で）
+// ▼ 送信ボタン（POST）
 document.getElementById("sendBtn").addEventListener("click", () => {
-  alert("送信処理は後で実装します！");
+  const inputs = document.querySelectorAll("input");
+  const updates = [];
+
+  inputs.forEach(input => {
+    updates.push({
+      row: Number(input.dataset.row),
+      col: Number(input.dataset.col),
+      value: input.value
+    });
+  });
+
+  fetch(GAS_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ updates })
+  })
+    .then(res => res.json())
+    .then(result => {
+      alert("送信しました！");
+    });
 });
