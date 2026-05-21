@@ -1,5 +1,5 @@
 // ★ あなたの GAS WebアプリURL を入れてください
-const GAS_URL = "https://script.google.com/macros/s/AKfycbyAsPBMpR7C-hoJgGkV8ipWORlA-rlb7DG9XPYc5AHPntZvvxaRALZYUNK1Ln_KtR0C/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbx5ZLZJdHHv9PvGOGn39vvLd31N-s2z7CeO06lXquIQFX3fil_Op0DoCxHYxzg5AN_k/exec";
 
 // ▼ 表示処理（GET）
 fetch(GAS_URL)
