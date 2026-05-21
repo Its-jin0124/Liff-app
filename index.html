@@ -2,33 +2,37 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>予約表</title>
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-  <script src="script.js" defer></script>
-
-  <style>
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-    td, th {
-      border: 1px solid #ccc;
-      padding: 6px;
-    }
-    input {
-      width: 95%;
-      padding: 4px;
-    }
-  </style>
+  <title>青パトスケジュール</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+  <h2>さくら坂３丁目　青色パトロール　巡回担当表</h2>
+  <p id="dateText"></p>
 
-  <h2>予約表</h2>
+  <table id="sheetTable" border="1">
+    <thead>
+      <tr>
+        <th>日程</th>
+        <th>名前1</th>
+        <th>名前2</th>
+        <th>名前3</th>
+        <th>名前4</th>
+        <th>決まらない場合</th>
+        <th>備考</th>
+      </tr>
+    </thead>
+    <tbody id="sheetBody"></tbody>
+  </table>
 
-  <!-- ★ ここが重要：JS が描画するテーブル -->
-  <table id="yoyakuTable"></table>
+  <p>※自身の名前を入力してください。</p>
+  <p>※同時に入力されると、後の方が優先される可能性があります。</p>
+  <p>※入力後のロック機能はありません。</p>
+
+  <!-- 送信ボタン（まだ中身なし） -->
   <button id="sendBtn" class="floating-btn">送信</button>
+
+  <script src="script.js"></script>
 </body>
 </html>
