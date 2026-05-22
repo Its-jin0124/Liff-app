@@ -36,3 +36,14 @@ input {
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
+
+.inline-send-btn {
+  font-size: 22px;        /* 文字を大きく */
+  padding: 14px 28px;     /* ボタン自体を大きく */
+  border-radius: 8px;     /* 少し丸く */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
