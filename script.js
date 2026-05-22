@@ -4,17 +4,15 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbxtbshOSDVz9oaXSLj2vkaJ
 function getTodayJST() {
   const now = new Date();
   const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-
   const y = jst.getFullYear();
   const m = String(jst.getMonth() + 1).padStart(2, "0");
   const d = String(jst.getDate()).padStart(2, "0");
-
   return `${y}/${m}/${d}`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("currentDate").textContent = getTodayJST();
-  loadTable(); // 初回読み込み
+  loadTable();
 });
 
 // ▼ 表の読み込み（JSONP）
@@ -26,7 +24,7 @@ function loadTable() {
       const data = JSON.parse(json);
 
       const tbody = document.getElementById("sheetBody");
-      tbody.innerHTML = ""; // 初期化
+      tbody.innerHTML = "";
 
       data.table.forEach((row, rIndex) => {
         const tr = document.createElement("tr");
@@ -40,9 +38,7 @@ function loadTable() {
             input.value = cell;
 
             // ▼ rIndex=0 がシートの 5 行目に対応
-            input.dataset.row = rIndex + 4;
-
-            // ▼ cIndex=1 がシートの C列（3列目）に対応
+            input.dataset.row = rIndex + 5;
             input.dataset.col = cIndex + 2;
 
             td.appendChild(input);
@@ -64,12 +60,20 @@ function sendUpdates() {
   const updates = [];
 
   inputs.forEach(input => {
-    updates.push({
-      row: Number(input.dataset.row),
-      col: Number(input.dataset.col),
-      value: input.value
-    });
+    const value = input.value.trim();
+    if (value !== "") { // 空欄は送信しない
+      updates.push({
+        row: Number(input.dataset.row),
+        col: Number(input.dataset.col),
+        value
+      });
+    }
   });
+
+  if (updates.length === 0) {
+    alert("入力がありません。");
+    return;
+  }
 
   const json = encodeURIComponent(JSON.stringify({ updates }));
   const url = `${GAS_URL}?callback=cbPost&data=${json}`;
@@ -81,7 +85,7 @@ function sendUpdates() {
       const result = JSON.parse(json);
 
       alert("送信しました！");
-      loadTable(); // 更新後に再読み込み
+      loadTable();
     })
     .catch(err => {
       console.error("送信エラー:", err);
