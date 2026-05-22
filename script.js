@@ -34,14 +34,16 @@ function loadTable() {
         row.forEach((cell, cIndex) => {
           const td = document.createElement("td");
 
-          if (rIndex === 0) {
-            td.textContent = cell;
-          } else if (cIndex >= 1 && cIndex <= 4) {
+          // ▼ 編集可能なのは C〜F列（cIndex=1〜4）
+          if (cIndex >= 1 && cIndex <= 4) {
             const input = document.createElement("input");
             input.value = cell;
 
-            input.dataset.row = rIndex + 4;
-            input.dataset.col = cIndex + 1;
+            // ▼ rIndex=0 がシートの 5 行目に対応
+            input.dataset.row = rIndex + 5;
+
+            // ▼ cIndex=1 がシートの C列（3列目）に対応
+            input.dataset.col = cIndex + 2;
 
             td.appendChild(input);
           } else {
