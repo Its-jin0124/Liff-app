@@ -56,12 +56,18 @@ function loadTable() {
 
 // ▼ 送信処理（JSONP）
 function sendUpdates() {
+  const dialog = document.getElementById("loadingDialog");
+  const dialogMessage = document.getElementById("dialogMessage");
+
+  dialogMessage.textContent = "送信中です。少しお待ちください。";
+  dialog.style.display = "flex";
+
   const inputs = document.querySelectorAll("input");
   const updates = [];
 
   inputs.forEach(input => {
     const value = input.value.trim();
-    if (value !== "") { // 空欄は送信しない
+    if (value !== "") {
       updates.push({
         row: Number(input.dataset.row),
         col: Number(input.dataset.col),
@@ -71,6 +77,7 @@ function sendUpdates() {
   });
 
   if (updates.length === 0) {
+    dialog.style.display = "none";
     alert("入力がありません。");
     return;
   }
@@ -84,10 +91,15 @@ function sendUpdates() {
       const json = text.replace(/^cbPost\(|\)$/g, "");
       const result = JSON.parse(json);
 
-      alert("送信しました！");
-      loadTable();
+      dialogMessage.textContent = "送信が終了しました。";
+
+      setTimeout(() => {
+        dialog.style.display = "none";
+        loadTable();
+      }, 1200);
     })
     .catch(err => {
+      dialog.style.display = "none";
       console.error("送信エラー:", err);
       alert("送信に失敗しました。");
     });
