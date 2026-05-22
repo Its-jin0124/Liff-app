@@ -7,7 +7,7 @@ fetch(`${GAS_URL}?callback=cb`)
     const json = text.replace(/^cb\(|\)$/g, "");
     const data = JSON.parse(json);
 
-    document.getElementById("dateText").textContent = data.date;
+   // document.getElementById("dateText").textContent = data.date;
     const tbody = document.getElementById("sheetBody");
 
     data.table.forEach((row, rIndex) => {
@@ -42,6 +42,24 @@ fetch(`${GAS_URL}?callback=cb`)
       tbody.appendChild(tr);
     });
   });
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("currentDate").textContent = getTodayJST();
+});
+
+// ▼ 日付を取得
+function getTodayJST() {
+    const now = new Date();
+    const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+
+    const y = jst.getFullYear();
+    const m = String(jst.getMonth() + 1).padStart(2, "0");
+    const d = String(jst.getDate()).padStart(2, "0");
+
+    return `${y}/${m}/${d}`;
+}
+
+
 
 // ▼ 送信処理（POST）
 function sendUpdates() {

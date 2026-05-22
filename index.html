@@ -1,3 +1,4 @@
+index.html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,18 +8,17 @@
 </head>
 
 <body>
+<h2>さくら坂３丁目　青色パトロール　巡回担当表</h2>
 
-  <h2>さくら坂３丁目　青色パトロール　巡回担当表</h2>
-
-  <!-- GASから取得した日付を表示 -->
-  <p id="dateText"></p>
+  <!-- アクセスした日付を表示 -->
+  <div id="currentDate" style="font-size: 18px; margin-bottom: 10px; font-weight: bold;"></div>
 
   <!-- スプレッドシートの内容を描画する表 -->
   <table>
     <tbody id="sheetBody"></tbody>
   </table>
 
-  <!-- 注意書き -->
+<!-- 注意書き -->
   <p>※自身の名前を入力してください。</p>
   <p>※同時に入力されると、後の方が優先される可能性があります。</p>
   <p>※入力後のロック機能はありません。</p>
@@ -27,9 +27,3 @@
   <div style="text-align:center; margin-top:10px;">
     <button id="sendBtn" class="inline-send-btn">送信</button>
   </div>
-
-  <!-- スクリプト -->
-  <script src="script.js"></script>
-
-</body>
-</html>
