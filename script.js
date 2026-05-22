@@ -40,7 +40,7 @@ function loadTable() {
             input.value = cell;
 
             // ▼ rIndex=0 がシートの 5 行目に対応
-            input.dataset.row = rIndex + 5;
+            input.dataset.row = rIndex + 4;
 
             // ▼ cIndex=1 がシートの C列（3列目）に対応
             input.dataset.col = cIndex + 2;
