@@ -1,4 +1,4 @@
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxueBZJHpSZ0yP2YHYk9GqHX_UvPUtci--b_qVhjujGT64XIAAUgweZ0utYgUlIKKly/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxtbshOSDVz9oaXSLj2vkaJiKSgKNduw0d9bOwgThf8DEs_9d_34lz1DvoWQ-gqBFc/exec";
 
 // ▼ 今日の日付（JST）を表示
 function getTodayJST() {
@@ -14,51 +14,49 @@ function getTodayJST() {
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("currentDate").textContent = getTodayJST();
+  loadTable(); // 初回読み込み
 });
 
-// ▼ 表示処理（GET）→ JSONP
-fetch(`${GAS_URL}?callback=cb`)
-  .then(res => res.text())
-  .then(text => {
-    const json = text.replace(/^cb\(|\)$/g, "");
-    const data = JSON.parse(json);
+// ▼ 表の読み込み（JSONP）
+function loadTable() {
+  fetch(`${GAS_URL}?callback=cbLoad`)
+    .then(res => res.text())
+    .then(text => {
+      const json = text.replace(/^cbLoad\(|\)$/g, "");
+      const data = JSON.parse(json);
 
-    const tbody = document.getElementById("sheetBody");
+      const tbody = document.getElementById("sheetBody");
+      tbody.innerHTML = ""; // 初期化
 
-    data.table.forEach((row, rIndex) => {
-      const tr = document.createElement("tr");
+      data.table.forEach((row, rIndex) => {
+        const tr = document.createElement("tr");
 
-      row.forEach((cell, cIndex) => {
-        const td = document.createElement("td");
+        row.forEach((cell, cIndex) => {
+          const td = document.createElement("td");
 
-        // ★ 1行目（ヘッダー）は編集不可
-        if (rIndex === 0) {
-          td.textContent = cell;
-        }
-        // ★ 2行目以降は名前1〜4（cIndex 1〜4）だけ編集可能
-        else if (cIndex >= 1 && cIndex <= 4) {
-          const input = document.createElement("input");
-          input.value = cell;
+          if (rIndex === 0) {
+            td.textContent = cell;
+          } else if (cIndex >= 1 && cIndex <= 4) {
+            const input = document.createElement("input");
+            input.value = cell;
 
-          // スプレッドシートの行列に合わせる
-          input.dataset.row = rIndex + 4; // B5〜
-          input.dataset.col = cIndex + 2; // C〜F
+            input.dataset.row = rIndex + 4;
+            input.dataset.col = cIndex + 2;
 
-          td.appendChild(input);
-        }
-        // ★ その他の列は編集不可
-        else {
-          td.textContent = cell;
-        }
+            td.appendChild(input);
+          } else {
+            td.textContent = cell;
+          }
 
-        tr.appendChild(td);
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
       });
-
-      tbody.appendChild(tr);
     });
-  });
+}
 
-// ▼ 送信処理（POST）
+// ▼ 送信処理（JSONP）
 function sendUpdates() {
   const inputs = document.querySelectorAll("input");
   const updates = [];
@@ -71,16 +69,22 @@ function sendUpdates() {
     });
   });
 
-  fetch(GAS_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ updates })
-  })
-    .then(res => res.json())
-    .then(result => {
+  const json = encodeURIComponent(JSON.stringify({ updates }));
+  const url = `${GAS_URL}?callback=cbPost&data=${json}`;
+
+  fetch(url)
+    .then(res => res.text())
+    .then(text => {
+      const json = text.replace(/^cbPost\(|\)$/g, "");
+      const result = JSON.parse(json);
+
       alert("送信しました！");
+      loadTable(); // 更新後に再読み込み
+    })
+    .catch(err => {
+      console.error("送信エラー:", err);
+      alert("送信に失敗しました。");
     });
 }
 
-// ▼ 下部の送信ボタンにイベントを設定
 document.getElementById("sendBtn").addEventListener("click", sendUpdates);
