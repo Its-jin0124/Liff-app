@@ -1,4 +1,4 @@
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxtbshOSDVz9oaXSLj2vkaJiKSgKNduw0d9bOwgThf8DEs_9d_34lz1DvoWQ-gqBFc/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyTrt_IQv4MwH7dysRDtqGav2W0lJwQRifzZ46zvmP2kKKuRSIY6-E8fl6a7oHodYFi/exec";
 
 // ▼ 今日の日付（JST）を表示
 function getTodayJST() {
