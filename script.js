@@ -40,8 +40,8 @@ function loadTable() {
             const input = document.createElement("input");
             input.value = cell;
 
-            input.dataset.row = rIndex + 5;
-            input.dataset.col = cIndex + 2;
+            input.dataset.row = rIndex + 4;
+            input.dataset.col = cIndex + 1;
 
             td.appendChild(input);
           } else {
