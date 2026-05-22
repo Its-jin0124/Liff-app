@@ -1,5 +1,21 @@
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxueBZJHpSZ0yP2YHYk9GqHX_UvPUtci--b_qVhjujGT64XIAAUgweZ0utYgUlIKKly/exec";
 
+// ▼ 今日の日付（JST）を表示
+function getTodayJST() {
+  const now = new Date();
+  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+
+  const y = jst.getFullYear();
+  const m = String(jst.getMonth() + 1).padStart(2, "0");
+  const d = String(jst.getDate()).padStart(2, "0");
+
+  return `${y}/${m}/${d}`;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("currentDate").textContent = getTodayJST();
+});
+
 // ▼ 表示処理（GET）→ JSONP
 fetch(`${GAS_URL}?callback=cb`)
   .then(res => res.text())
@@ -7,7 +23,6 @@ fetch(`${GAS_URL}?callback=cb`)
     const json = text.replace(/^cb\(|\)$/g, "");
     const data = JSON.parse(json);
 
-   // document.getElementById("dateText").textContent = data.date;
     const tbody = document.getElementById("sheetBody");
 
     data.table.forEach((row, rIndex) => {
@@ -43,24 +58,6 @@ fetch(`${GAS_URL}?callback=cb`)
     });
   });
 
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("currentDate").textContent = getTodayJST();
-});
-
-// ▼ 日付を取得
-function getTodayJST() {
-    const now = new Date();
-    const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-
-    const y = jst.getFullYear();
-    const m = String(jst.getMonth() + 1).padStart(2, "0");
-    const d = String(jst.getDate()).padStart(2, "0");
-
-    return `${y}/${m}/${d}`;
-}
-
-
-
 // ▼ 送信処理（POST）
 function sendUpdates() {
   const inputs = document.querySelectorAll("input");
@@ -87,4 +84,3 @@ function sendUpdates() {
 
 // ▼ 下部の送信ボタンにイベントを設定
 document.getElementById("sendBtn").addEventListener("click", sendUpdates);
-
