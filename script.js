@@ -5,7 +5,6 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbykLEDHLaywaDj7gBG2u_Ir
 const urlParams = new URLSearchParams(window.location.search);
 const ACCESS_KEY = urlParams.get("key");
 
-
 // ▼ 今日の日付（JST）を表示
 function getTodayJST() {
   const now = new Date();
@@ -21,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
   loadTable();
 });
 
-
 // ▼ 表の読み込み（JSONP）
 function loadTable() {
   const script = document.createElement("script");
@@ -29,7 +27,8 @@ function loadTable() {
   document.body.appendChild(script);
 }
 
-function cbLoad(response) {
+// ▼ JSONP コールバック（グローバル登録）
+window.cbLoad = function(response) {
   const data = response;
   const tbody = document.getElementById("sheetBody");
   tbody.innerHTML = "";
@@ -40,6 +39,7 @@ function cbLoad(response) {
     row.forEach((cell, cIndex) => {
       const td = document.createElement("td");
 
+      // ▼ 編集可能なのは C〜F列（cIndex=1〜4）
       if (cIndex >= 1 && cIndex <= 4) {
         const input = document.createElement("input");
         input.value = cell;
@@ -55,8 +55,7 @@ function cbLoad(response) {
 
     tbody.appendChild(tr);
   });
-}
-
+};
 
 // ▼ 送信処理（JSONP）
 function sendUpdates() {
@@ -87,26 +86,22 @@ function sendUpdates() {
   }
 
   const json = encodeURIComponent(JSON.stringify({ updates }));
-  const url = `${GAS_URL}?callback=cbPost&data=${json}&key=${ACCESS_KEY}`;
-
-  fetch(url)
-    .then(res => res.text())
-    .then(text => {
-      const json = text.replace(/^cbPost\(|\)$/g, "");
-      const result = JSON.parse(json);
-
-      dialogMessage.textContent = "送信が終了しました。";
-
-      setTimeout(() => {
-        dialog.style.display = "none";
-        loadTable();
-      }, 1200);
-    })
-    .catch(err => {
-      dialog.style.display = "none";
-      console.error("送信エラー:", err);
-      alert("送信に失敗しました。");
-    });
+  const script = document.createElement("script");
+  script.src = `${GAS_URL}?callback=cbPost&data=${json}&key=${ACCESS_KEY}`;
+  document.body.appendChild(script);
 }
+
+// ▼ JSONP コールバック（送信完了）
+window.cbPost = function(response) {
+  const dialog = document.getElementById("loadingDialog");
+  const dialogMessage = document.getElementById("dialogMessage");
+
+  dialogMessage.textContent = "送信が終了しました。";
+
+  setTimeout(() => {
+    dialog.style.display = "none";
+    loadTable();
+  }, 1200);
+};
 
 document.getElementById("sendBtn").addEventListener("click", sendUpdates);
