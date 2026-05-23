@@ -1,5 +1,5 @@
 // ★ デプロイ後の GAS の最終URL（exec形式）を入れてください
-const GAS_URL = "https://script.google.com/macros/s/AKfycbykLEDHLaywaDj7gBG2u_IrUArlryGrqljWxNMsqGnasEEJRk178mhAlnM3A-MAa1vo/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxMtSjsLzYb35PnoYSbd_NNFdJJWA8OvBfvbTZOxNlhsBVYeVgRbfAl28CEJ8gyBpHr/exec";
 
 // ▼ URL の ?key=xxxx を取得（LIFF のエンコード対策）
 let ACCESS_KEY = null;
@@ -59,6 +59,10 @@ window.cbLoad = function(response) {
       if (cIndex >= 1 && cIndex <= 4) {
         const input = document.createElement("input");
         input.value = cell;
+
+        // ★ 元の値を保持（差分判定用）
+        input.dataset.original = cell;
+
         input.dataset.row = rIndex + 5;
         input.dataset.col = cIndex + 2;
         td.appendChild(input);
@@ -85,19 +89,22 @@ function sendUpdates() {
   const updates = [];
 
   inputs.forEach(input => {
-    const value = input.value.trim();
-    if (value !== "") {
+    const original = input.dataset.original;
+    const current = input.value;
+
+    // ★ 元の値と違う場合だけ送信（空欄も含む）
+    if (original !== current) {
       updates.push({
         row: Number(input.dataset.row),
         col: Number(input.dataset.col),
-        value
+        value: current
       });
     }
   });
 
   if (updates.length === 0) {
     dialog.style.display = "none";
-    alert("入力がありません。");
+    alert("変更がありません。");
     return;
   }
 
