@@ -1,5 +1,5 @@
 // ★ デプロイ後の GAS の最終URL（googleusercontent.com）を入れてください
-const GAS_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnTsPO5jChAH7o3ySlDWAS5azsBMMkKL8JwDeUNctovTQ89lB_43GbhVDK5iSC6hQXPH1p-JqoZt1YgcuVk5uV1sgvX9cvlb27ralhTLhxACtAJ-FH2_sAa7L2QbhCfPDQeukSYtOMA7N5plZIguOPCwLpfVuFLP6fToT2-hN8XKgiWfkIA8rFECGzbLOrsTZClvYhOR502bz-ZiUJHFFWL0fM6yeAs4QoJVxmxkW2GfkVw3EXG8BLwSXxSo5qZVqnsi_8SCZv89zevwErWISCcxv_KjbA&lib=MyKRQqBssREHI6V9_PKnLDqjSmd3jpffu";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbykLEDHLaywaDj7gBG2u_IrUArlryGrqljWxNMsqGnasEEJRk178mhAlnM3A-MAa1vo/exec";
 
 // URL の ?key=xxxx を取得（LIFF のエンコード対策）
 const urlParams = new URLSearchParams(window.location.href.split('?')[1]);
