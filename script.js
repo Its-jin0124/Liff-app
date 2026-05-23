@@ -24,41 +24,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ▼ 表の読み込み（JSONP）
 function loadTable() {
-  fetch(`${GAS_URL}?callback=cbLoad&key=${ACCESS_KEY}`)
-    .then(res => res.text())
-    .then(text => {
-      const json = text.replace(/^cbLoad\(|\)$/g, "");
-      const data = JSON.parse(json);
+  const script = document.createElement("script");
+  script.src = `${GAS_URL}?callback=cbLoad&key=${ACCESS_KEY}`;
+  document.body.appendChild(script);
+}
 
-      const tbody = document.getElementById("sheetBody");
-      tbody.innerHTML = "";
+function cbLoad(response) {
+  const data = response;
+  const tbody = document.getElementById("sheetBody");
+  tbody.innerHTML = "";
 
-      data.table.forEach((row, rIndex) => {
-        const tr = document.createElement("tr");
+  data.table.forEach((row, rIndex) => {
+    const tr = document.createElement("tr");
 
-        row.forEach((cell, cIndex) => {
-          const td = document.createElement("td");
+    row.forEach((cell, cIndex) => {
+      const td = document.createElement("td");
 
-          // ▼ 編集可能なのは C〜F列（cIndex=1〜4）
-          if (cIndex >= 1 && cIndex <= 4) {
-            const input = document.createElement("input");
-            input.value = cell;
+      if (cIndex >= 1 && cIndex <= 4) {
+        const input = document.createElement("input");
+        input.value = cell;
+        input.dataset.row = rIndex + 5;
+        input.dataset.col = cIndex + 2;
+        td.appendChild(input);
+      } else {
+        td.textContent = cell;
+      }
 
-            // ▼ rIndex=0 がシートの 5 行目に対応
-            input.dataset.row = rIndex + 5;
-            input.dataset.col = cIndex + 2;
-
-            td.appendChild(input);
-          } else {
-            td.textContent = cell;
-          }
-
-          tr.appendChild(td);
-        });
-
-        tbody.appendChild(tr);
-      });
+      tr.appendChild(td);
     });
+
+    tbody.appendChild(tr);
+  });
 }
 
 
