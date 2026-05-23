@@ -1,4 +1,10 @@
-const GAS_URL = "https://script.google.com/macros/s/AKfycbyTrt_IQv4MwH7dysRDtqGav2W0lJwQRifzZ46zvmP2kKKuRSIY6-E8fl6a7oHodYFi/exec";
+// ★ デプロイ後の GAS URL を入れてください
+const GAS_URL = "https://script.google.com/macros/s/AKfycbykLEDHLaywaDj7gBG2u_IrUArlryGrqljWxNMsqGnasEEJRk178mhAlnM3A-MAa1vo/exec";
+
+// URL の ?key=xxxx を取得
+const urlParams = new URLSearchParams(window.location.search);
+const ACCESS_KEY = urlParams.get("key");
+
 
 // ▼ 今日の日付（JST）を表示
 function getTodayJST() {
@@ -15,9 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
   loadTable();
 });
 
+
 // ▼ 表の読み込み（JSONP）
 function loadTable() {
-  fetch(`${GAS_URL}?callback=cbLoad`)
+  fetch(`${GAS_URL}?callback=cbLoad&key=${ACCESS_KEY}`)
     .then(res => res.text())
     .then(text => {
       const json = text.replace(/^cbLoad\(|\)$/g, "");
@@ -54,6 +61,7 @@ function loadTable() {
     });
 }
 
+
 // ▼ 送信処理（JSONP）
 function sendUpdates() {
   const dialog = document.getElementById("loadingDialog");
@@ -83,7 +91,7 @@ function sendUpdates() {
   }
 
   const json = encodeURIComponent(JSON.stringify({ updates }));
-  const url = `${GAS_URL}?callback=cbPost&data=${json}`;
+  const url = `${GAS_URL}?callback=cbPost&data=${json}&key=${ACCESS_KEY}`;
 
   fetch(url)
     .then(res => res.text())
