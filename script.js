@@ -1,8 +1,8 @@
-// ★ デプロイ後の GAS URL を入れてください
-const GAS_URL = "https://script.google.com/macros/s/AKfycbykLEDHLaywaDj7gBG2u_IrUArlryGrqljWxNMsqGnasEEJRk178mhAlnM3A-MAa1vo/exec";
+// ★ デプロイ後の GAS の最終URL（googleusercontent.com）を入れてください
+const GAS_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnTsPO5jChAH7o3ySlDWAS5azsBMMkKL8JwDeUNctovTQ89lB_43GbhVDK5iSC6hQXPH1p-JqoZt1YgcuVk5uV1sgvX9cvlb27ralhTLhxACtAJ-FH2_sAa7L2QbhCfPDQeukSYtOMA7N5plZIguOPCwLpfVuFLP6fToT2-hN8XKgiWfkIA8rFECGzbLOrsTZClvYhOR502bz-ZiUJHFFWL0fM6yeAs4QoJVxmxkW2GfkVw3EXG8BLwSXxSo5qZVqnsi_8SCZv89zevwErWISCcxv_KjbA&lib=MyKRQqBssREHI6V9_PKnLDqjSmd3jpffu";
 
-// URL の ?key=xxxx を取得
-const urlParams = new URLSearchParams(window.location.search);
+// URL の ?key=xxxx を取得（LIFF のエンコード対策）
+const urlParams = new URLSearchParams(window.location.href.split('?')[1]);
 const ACCESS_KEY = urlParams.get("key");
 
 // ▼ 今日の日付（JST）を表示
@@ -29,6 +29,12 @@ function loadTable() {
 
 // ▼ JSONP コールバック（グローバル登録）
 window.cbLoad = function(response) {
+  if (!response || !response.table) {
+    console.error("cbLoad: table data not found", response);
+    alert("データの読み込みに失敗しました。GAS の URL または key を確認してください。");
+    return;
+  }
+
   const data = response;
   const tbody = document.getElementById("sheetBody");
   tbody.innerHTML = "";
