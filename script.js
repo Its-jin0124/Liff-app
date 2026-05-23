@@ -1,9 +1,19 @@
-// ★ デプロイ後の GAS の最終URL（googleusercontent.com）を入れてください
+// ★ デプロイ後の GAS の最終URL（exec形式）を入れてください
 const GAS_URL = "https://script.google.com/macros/s/AKfycbykLEDHLaywaDj7gBG2u_IrUArlryGrqljWxNMsqGnasEEJRk178mhAlnM3A-MAa1vo/exec";
 
-// URL の ?key=xxxx を取得（LIFF のエンコード対策）
-const urlParams = new URLSearchParams(window.location.href.split('?')[1]);
-const ACCESS_KEY = urlParams.get("key");
+// ▼ URL の ?key=xxxx を取得（LIFF のエンコード対策）
+let ACCESS_KEY = null;
+const url = new URL(window.location.href);
+
+// 通常の ?key= パターン
+ACCESS_KEY = url.searchParams.get("key");
+
+// LIFF の liff.state=%3Fkey%3Dxxxx パターンにも対応
+if (!ACCESS_KEY && url.search.includes("liff.state")) {
+  const decoded = decodeURIComponent(url.search);
+  const match = decoded.match(/key=([A-Za-z0-9]+)/);
+  if (match) ACCESS_KEY = match[1];
+}
 
 // ▼ 今日の日付（JST）を表示
 function getTodayJST() {
