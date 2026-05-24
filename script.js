@@ -1,11 +1,10 @@
-// ★ デプロイ後の GAS の最終URL（exec形式）を入れてください
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxMtSjsLzYb35PnoYSbd_NNFdJJWA8OvBfvbTZOxNlhsBVYeVgRbfAl28CEJ8gyBpHr/exec";
+// ★ デプロイ後の GAS の最終URL（exec形式）
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyYbmaLYm6TWZ-WzrLbqsl2Us3W4c6b_13wjj2cviAGugqIM8pfd4rOuNnKdEK1IEoj/exec";
 
-// ▼ URL の ?key=xxxx を取得（LIFF のエンコード対策）
+// ▼ URL の ?key=xxxx を取得
 let ACCESS_KEY = null;
 const url = new URL(window.location.href);
 
-// 通常の ?key= パターン
 ACCESS_KEY = url.searchParams.get("key");
 
 // LIFF の liff.state=%3Fkey%3Dxxxx パターンにも対応
@@ -15,7 +14,7 @@ if (!ACCESS_KEY && url.search.includes("liff.state")) {
   if (match) ACCESS_KEY = match[1];
 }
 
-// ▼ 今日の日付（JST）を表示
+// ▼ 今日の日付（JST）
 function getTodayJST() {
   const now = new Date();
   const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
@@ -37,11 +36,10 @@ function loadTable() {
   document.body.appendChild(script);
 }
 
-// ▼ JSONP コールバック（グローバル登録）
+// ▼ JSONP コールバック
 window.cbLoad = function(response) {
   if (!response || !response.table) {
-    console.error("cbLoad: table data not found", response);
-    alert("データの読み込みに失敗しました。GAS の URL または key を確認してください。");
+    alert("データの読み込みに失敗しました。");
     return;
   }
 
@@ -55,19 +53,18 @@ window.cbLoad = function(response) {
     row.forEach((cell, cIndex) => {
       const td = document.createElement("td");
 
-      // ▼ 編集可能なのは C〜F列（cIndex=1〜4）
-      if (cIndex >= 1 && cIndex <= 4) {
+      // ★ 編集可能なのは C〜F列 → cIndex=2〜5
+      if (cIndex >= 2 && cIndex <= 5) {
         const input = document.createElement("input");
         input.value = cell;
 
-        // ★ 元の値を保持（差分判定用）
         input.dataset.original = cell;
-
         input.dataset.row = rIndex + 5;
-        input.dataset.col = cIndex + 2;
+        input.dataset.col = cIndex + 2; // A列追加で+2
+
         td.appendChild(input);
       } else {
-        td.textContent = cell;
+        td.textContent = cell; // A列などは表示のみ
       }
 
       tr.appendChild(td);
@@ -92,7 +89,6 @@ function sendUpdates() {
     const original = input.dataset.original;
     const current = input.value;
 
-    // ★ 元の値と違う場合だけ送信（空欄も含む）
     if (original !== current) {
       updates.push({
         row: Number(input.dataset.row),
@@ -114,7 +110,7 @@ function sendUpdates() {
   document.body.appendChild(script);
 }
 
-// ▼ JSONP コールバック（送信完了）
+// ▼ 送信完了
 window.cbPost = function(response) {
   const dialog = document.getElementById("loadingDialog");
   const dialogMessage = document.getElementById("dialogMessage");
