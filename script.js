@@ -1,5 +1,5 @@
 // ★ デプロイ後の GAS の最終URL（exec形式）
-const GAS_URL = "https://script.google.com/macros/s/AKfycbyYbmaLYm6TWZ-WzrLbqsl2Us3W4c6b_13wjj2cviAGugqIM8pfd4rOuNnKdEK1IEoj/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyQbHYiOb_BsxZV4Ion6hXjsbK4jNZdAvOS5VZERKhDl4MxDkfMyUeVZYqwhXLy8Ebm/exec";
 
 // ▼ URL の ?key=xxxx を取得
 let ACCESS_KEY = null;
