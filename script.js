@@ -60,7 +60,7 @@ window.cbLoad = function(response) {
 
         input.dataset.original = cell;
         input.dataset.row = rIndex + 5;
-        input.dataset.col = cIndex + 2; // A列追加で+2
+        input.dataset.col = cIndex + 1; // A列追加で+2
 
         td.appendChild(input);
       } else {
