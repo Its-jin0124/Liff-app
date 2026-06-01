@@ -15,72 +15,83 @@
 
   <!-- スプレッドシートの内容を描画する表 -->
   <table>
+    <thead>
+      <tr>
+        <th>日付</th>
+        <th>曜日</th>
+        <th>名前1</th>
+        <th>名前2</th>
+        <th>名前3</th>
+        <th>名前4</th>
+        <th>予備</th>
+        <th>備考</th>
+      </tr>
+    </thead>
     <tbody id="sheetBody"></tbody>
   </table>
 
-<!-- 入力方法 -->
-<p>【入力方法】</p>
-<p>① 入力したい月日の「名前1〜4」の空いている枠をタップ（枠は左詰め）</p>
-<p>　　※タップ＝指で軽く触る</p>
-<p>　　例1：名前1・2が埋まっている場合 → 名前3に入力できます。</p>
-<p>　　例2：名前3が埋まっていても、名前1・2が空白の場合 → 名前1に入力。</p>
-<p>　→ 入力状態（枠が橙色になり、文字が入れられる状態）になります。</p>
+  <!-- 入力方法 -->
+  <p>【入力方法】</p>
+  <p>① 入力したい月日の「名前1〜4」の空いている枠をタップ（枠は左詰め）</p>
+  <p>　　※タップ＝指で軽く触る</p>
+  <p>　　例1：名前1・2が埋まっている場合 → 名前3に入力できます。</p>
+  <p>　　例2：名前3が埋まっていても、名前1・2が空白の場合 → 名前1に入力。</p>
+  <p>　→ 入力状態（枠が橙色になり、文字が入れられる状態）になります。</p>
 
-<p>② そこに自身のお名前を入力（漢字）</p>
+  <p>② そこに自身のお名前を入力（漢字）</p>
 
-<p>③ 青色の送信ボタンをタップ</p>
-<p>　→ 「送信中です。少しお待ちください」と表示され、全体がロックされます。</p>
-<p>　→ 時間少しかかりますが、完了すると「送信しました」と表示されます。</p>
+  <p>③ 青色の送信ボタンをタップ</p>
+  <p>　→ 「送信中です。少しお待ちください」と表示され、全体がロックされます。</p>
+  <p>　→ 時間少しかかりますが、完了すると「送信しました」と表示されます。</p>
 
-<p>④ 入力した枠に反映されていることを確認</p>
-<p>（注意）反映されていない場合は、他の方が先に入力された可能性があります。</p>
-<p>　　　　複数人が同時に同じ枠へ入力すると、最後に送信した方が優先されます。</p>
+  <p>④ 入力した枠に反映されていることを確認</p>
+  <p>（注意）反映されていない場合は、他の方が先に入力された可能性があります。</p>
+  <p>　　　　複数人が同時に同じ枠へ入力すると、最後に送信した方が優先されます。</p>
 
-<!-- 削除方法 -->
-<p>【削除方法】</p>
-<p>① 削除したい枠をタップ</p>
-<p>② スマホのバックスペース等で名前を消す</p>
-<p>③ 送信ボタンをタップし、「送信しました」後に枠の名前が消えていることを確認</p>
+  <!-- 削除方法 -->
+  <p>【削除方法】</p>
+  <p>① 削除したい枠をタップ</p>
+  <p>② スマホのバックスペース等で名前を消す</p>
+  <p>③ 送信ボタンをタップし、「送信しました」後に枠の名前が消えていることを確認</p>
 
-<!-- その他 -->
-<p>【その他】</p>
-<p>● 他の月日もまとめて入力可能です。</p>
-<p>●（重要）リンクは非公開ですが、配布された方が他へ転送するとアクセス可能になります。</p>
-<p>　　取り扱いにはご注意ください。</p>
-
-  
+  <!-- その他 -->
+  <p>【その他】</p>
+  <p>● 他の月日もまとめて入力可能です。</p>
+  <p>●（重要）リンクは非公開ですが、配布された方が他へ転送するとアクセス可能になります。</p>
+  <p>　　取り扱いにはご注意ください。</p>
 
   <!-- ★ 送信ボタンはここに固定配置（表の外） -->
   <div style="text-align:center; margin-top:10px;">
     <button id="sendBtn" class="inline-send-btn">送信</button>
   </div>
-<div id="loadingDialog" class="dialog" style="display:none;">
-  <div class="dialog-content">
-    <p id="dialogMessage">送信中です。少しお待ちください。</p>
-  </div>
-</div>
 
-<style>
-.dialog {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-.dialog-content {
-  background: white;
-  padding: 20px 30px;
-  border-radius: 8px;
-  font-size: 18px;
-  text-align: center;
-}
-</style>
+  <div id="loadingDialog" class="dialog" style="display:none;">
+    <div class="dialog-content">
+      <p id="dialogMessage">送信中です。少しお待ちください。</p>
+    </div>
+  </div>
+
+  <style>
+    .dialog {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .dialog-content {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      font-size: 18px;
+      text-align: center;
+    }
+  </style>
 
   <!-- スクリプト -->
   <script src="script.js"></script>
